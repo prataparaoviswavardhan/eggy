@@ -1,274 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cat vs Laser 🐱</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: #111;
-            color: white;
-            font-family: Arial;
-            text-align: center;
-        }
-
-        h1 {
-            margin: 20px;
-        }
-
-        #game {
-            width: 500px;
-            height: 600px;
-            background: #222;
-            border: 3px solid white;
-            margin: auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #player {
-            position: absolute;
-            bottom: 20px;
-            left: 220px;
-            font-size: 50px;
-        }
-
-        .laser {
-            position: absolute;
-            width: 20px;
-            height: 70px;
-            background: red;
-            border-radius: 10px;
-        }
-
-        #score {
-            font-size: 25px;
-        }
-
-        #gameOver {
-            display: none;
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        #gameOver h2 {
-            font-size: 45px;
-        }
-
-        button {
-            padding: 12px 25px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yarn Heist 🧶</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>🐱 CAT VS LASER 🔴</h1>
+    <h1>🧶 YARN HEIST</h1>
 
-    <p id="score">Score: 0</p>
+    <p class="subtitle">
+        Help her steal the yarn without getting caught! 😂
+    </p>
+
+    <div class="hud">
+        <span>🧶 Yarn: <b id="score">0</b></span>
+        <span>❤️ Lives: <b id="lives">3</b></span>
+        <span>🔥 Level: <b id="level">1</b></span>
+    </div>
 
     <div id="game">
 
-        <div id="player">🐱</div>
+        <!-- YOUR ORIGINAL IMAGE — NOT CROPPED -->
+        <div id="player">
+            <img src="img2.jpg" alt="Crochet cat">
+        </div>
 
-        <div id="gameOver">
-            <h2>💀 YOU DIED</h2>
-            <p id="finalScore"></p>
-            <button onclick="restart()">Play Again</button>
+        <div id="message">
+
+            <h2>🧶 YARN HEIST</h2>
+
+            <p>
+                Move with ← → or A / D
+            </p>
+
+            <p>
+                Catch 🧶 &nbsp; | &nbsp; Avoid ✂️
+            </p>
+
+            <button id="startBtn">
+                STEAL THE YARN
+            </button>
+
         </div>
 
     </div>
 
-    <p>Use ⬅️ ➡️ to move</p>
-
-    <script>
-
-        const game = document.getElementById("game");
-        const player = document.getElementById("player");
-        const scoreText = document.getElementById("score");
-        const gameOverScreen = document.getElementById("gameOver");
-        const finalScore = document.getElementById("finalScore");
-
-        let playerX = 220;
-        let score = 0;
-        let gameRunning = true;
-
-        let lasers = [];
-
-        let speed = 3;
-
-        // PLAYER MOVEMENT
-        document.addEventListener("keydown", (event) => {
-
-            if (!gameRunning) return;
-
-            if (event.key === "ArrowLeft") {
-                playerX -= 30;
-            }
-
-            if (event.key === "ArrowRight") {
-                playerX += 30;
-            }
-
-            // Keep player inside game
-            if (playerX < 0) {
-                playerX = 0;
-            }
-
-            if (playerX > 450) {
-                playerX = 450;
-            }
-
-            player.style.left = playerX + "px";
-        });
-
-
-        // CREATE LASER
-        function createLaser() {
-
-            if (!gameRunning) return;
-
-            const laser = document.createElement("div");
-
-            laser.classList.add("laser");
-
-            const randomX = Math.random() * 480;
-
-            laser.style.left = randomX + "px";
-
-            laser.style.top = "-80px";
-
-            game.appendChild(laser);
-
-            lasers.push({
-                element: laser,
-                x: randomX,
-                y: -80
-            });
-        }
-
-
-        // COLLISION DETECTION
-        function collision(laser) {
-
-            const playerLeft = playerX;
-            const playerRight = playerX + 50;
-
-            const laserLeft = laser.x;
-            const laserRight = laser.x + 20;
-
-            const playerTop = 530;
-            const playerBottom = 580;
-
-            const laserTop = laser.y;
-            const laserBottom = laser.y + 70;
-
-            return (
-                playerRight > laserLeft &&
-                playerLeft < laserRight &&
-                playerBottom > laserTop &&
-                playerTop < laserBottom
-            );
-        }
-
-
-        // GAME LOOP
-        function gameLoop() {
-
-            if (!gameRunning) return;
-
-            lasers.forEach((laser, index) => {
-
-                laser.y += speed;
-
-                laser.element.style.top = laser.y + "px";
-
-                // Collision
-                if (collision(laser)) {
-                    endGame();
-                }
-
-                // Laser escaped
-                if (laser.y > 600) {
-
-                    laser.element.remove();
-
-                    lasers.splice(index, 1);
-
-                    score++;
-
-                    scoreText.textContent = "Score: " + score;
-
-                    // Game gets harder
-                    if (score % 5 === 0) {
-                        speed += 0.5;
-                    }
-                }
-            });
-
-            requestAnimationFrame(gameLoop);
-        }
-
-
-        // GAME OVER
-        function endGame() {
-
-            gameRunning = false;
-
-            gameOverScreen.style.display = "flex";
-
-            finalScore.textContent = "You survived " + score + " lasers 😂";
-        }
-
-
-        // RESTART
-        function restart() {
-
-            lasers.forEach(laser => {
-                laser.element.remove();
-            });
-
-            lasers = [];
-
-            playerX = 220;
-            score = 0;
-            speed = 3;
-
-            player.style.left = playerX + "px";
-
-            scoreText.textContent = "Score: 0";
-
-            gameOverScreen.style.display = "none";
-
-            gameRunning = true;
-
-            gameLoop();
-        }
-
-
-        // CREATE LASERS RANDOMLY
-        setInterval(() => {
-
-            if (gameRunning) {
-                createLaser();
-            }
-
-        }, 700);
-
-
-        gameLoop();
-
-    </script>
+    <p class="hint">
+        Don't let the scissors ruin her yarn addiction 💀
+    </p>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
