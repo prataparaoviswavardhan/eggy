@@ -1,0 +1,212 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+
+    background: #17131a;
+    color: white;
+}
+
+h1 {
+    margin: 20px 0 5px;
+}
+
+.subtitle {
+    margin: 0 0 15px;
+    opacity: 0.8;
+}
+
+.hud {
+    width: 500px;
+    max-width: 94vw;
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    font-size: 17px;
+}
+
+
+/* GAME */
+
+#game {
+    width: 500px;
+    height: 620px;
+
+    max-width: 94vw;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border: 3px solid white;
+    border-radius: 20px;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            #39283f 0 2px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            #39283f 0 2px,
+            transparent 3px
+        ),
+        #211b25;
+}
+
+
+/* PLAYER */
+
+#player {
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    left: 50%;
+    bottom: 10px;
+
+    transform: translateX(-50%);
+
+    z-index: 5;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    border: 4px solid white;
+
+    background: #eadfca;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(255, 220, 130, 0.25);
+
+    pointer-events: none;
+}
+
+
+/*
+    IMPORTANT:
+
+    The original image is NOT cropped.
+
+    object-fit: contain means the COMPLETE
+    img2.jpg stays visible inside the circle.
+*/
+
+#player img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/* FALLING OBJECTS */
+
+.item {
+    position: absolute;
+
+    top: -70px;
+
+    font-size: 42px;
+
+    user-select: none;
+}
+
+.yarn {
+    filter:
+        drop-shadow(0 0 6px rgba(255, 210, 90, 0.6));
+}
+
+.scissors {
+    filter:
+        drop-shadow(0 0 7px rgba(255, 60, 60, 0.7));
+}
+
+
+/* START / GAME OVER SCREEN */
+
+#message {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 20;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    background: rgba(0, 0, 0, 0.72);
+}
+
+#message.hidden {
+    display: none;
+}
+
+#message h2 {
+    font-size: 40px;
+
+    margin: 0 0 10px;
+}
+
+#message p {
+    margin: 5px 0;
+}
+
+
+/* BUTTON */
+
+button {
+    margin-top: 20px;
+
+    padding: 13px 24px;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    background: #f4c95d;
+
+    transition: 0.15s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+
+.hint {
+    opacity: 0.7;
+}
